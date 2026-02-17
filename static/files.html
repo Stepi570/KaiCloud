@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaiCloud</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #2f3136;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+header {
+    background-color: #2b2d31;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #3c3f45;
+    position: relative;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.instructions {
+    position: absolute;
+    right: 20px;
+    color: #b5bac1;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ===== MAIN ===== */
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.upload-box {
+    background: #ffffff;
+    color: #2f3136;
+    width: 100%;
+    max-width: 500px;
+    height: 260px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+.upload-box.dragover {
+    background-color: #f0f3f8;
+    border: 2px dashed #4e9cff;
+}
+
+.upload-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.upload-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.upload-link {
+    color: #4e9cff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+/* ===== SUCCESS CHECK ===== */
+.checkmark {
+    font-size: 60px;
+    color: #28c76f;
+    animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .upload-box {
+        height: 220px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <img src="/logo.jpg" class="logo" alt="logo">
+
+
+        <div class="title">KaiCloud</div>
+    </div>
+    <div class="instructions">Инструкция ▼</div>
+</header>
+
+<main>
+    <div class="upload-box" id="uploadBox">
+        <div class="upload-content" id="uploadContent">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Перетащите сюда ваш файл</div>
+            <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+        </div>
+        <input type="file" id="fileInput">
+    </div>
+</main>
+
+<script>
+/* =======================
+   Проверка при открытии
+======================= */
+/* =======================
+   Проверка при открытии
+======================= */
+async function checkAccess() {
+    try {
+        const res = await fetch("/api/check");
+        const data = await res.json();
+
+        if (!data) {
+            window.location.href = "/";
+        }
+    } catch (e) {
+        window.location.href = "/";
+    }
+}
+
+// При первой загрузке
+window.addEventListener("load", checkAccess);
+
+// При возврате назад из кэша
+window.addEventListener("pageshow", (event) => {
+    if (event.persisted) { // страница загружена из bfcache
+        checkAccess();
+    }
+});
+
+
+/* =======================
+   Загрузка файла
+======================= */
+const uploadBox = document.getElementById("uploadBox");
+const fileInput = document.getElementById("fileInput");
+const fileSelect = document.getElementById("fileSelect");
+const uploadContent = document.getElementById("uploadContent");
+
+fileSelect.addEventListener("click", () => fileInput.click());
+
+uploadBox.addEventListener("dragover", e => {
+    e.preventDefault();
+    uploadBox.classList.add("dragover");
+});
+
+uploadBox.addEventListener("dragleave", () => {
+    uploadBox.classList.remove("dragover");
+});
+
+uploadBox.addEventListener("drop", e => {
+    e.preventDefault();
+    uploadBox.classList.remove("dragover");
+    handleFile(e.dataTransfer.files[0]);
+});
+
+fileInput.addEventListener("change", e => {
+    handleFile(e.target.files[0]);
+});
+
+function handleFile(file) {
+    if (!file) return;
+
+    // Отправка файла
+    const formData = new FormData();
+    formData.append("file", file);
+
+    fetch("/api/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    // Показать галочку
+    uploadContent.innerHTML = `<div class="checkmark">✔</div>`;
+
+    setTimeout(() => {
+        resetUploadBox();
+    }, 1500);
+}
+
+function resetUploadBox() {
+    uploadContent.innerHTML = `
+        <div class="upload-icon">📄</div>
+        <div class="upload-text">Перетащите сюда ваш файл</div>
+        <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+    `;
+    document.getElementById("fileSelect")
+        .addEventListener("click", () => fileInput.click());
+}
+</script>
+
+</body>
+</html>
+
+
