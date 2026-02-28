@@ -1,5 +1,4 @@
 aiofiles==25.1.0
-aiogram==3.25.0
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.3
 aiosignal==1.4.0
@@ -14,7 +13,9 @@ fastapi==0.129.0
 frozenlist==1.8.0
 greenlet==3.3.1
 h11==0.16.0
+aiogram
 idna==3.11
+python-docx
 lxml==6.0.2
 magic-filter==1.0.12
 multidict==6.7.1
@@ -26,7 +27,6 @@ propcache==0.4.1
 pydantic==2.12.5
 pydantic_core==2.41.5
 python-dateutil==2.9.0.post0
-python-docx==1.2.0
 python-multipart==0.0.22
 pytz==2025.2
 six==1.17.0

@@ -1,0 +1,14 @@
+18:05 21:02:2026
+Traceback (most recent call last):
+  File "/app/fast_api/router/requestss.py", line 77, in download_file
+    raise HTTPException(status_code=403, detail="Cloud выключен!")
+fastapi.exceptions.HTTPException: 403: Cloud выключен!
+
+
+18:05 21:02:2026
+Traceback (most recent call last):
+  File "/app/fast_api/router/requestss.py", line 77, in download_file
+    raise HTTPException(status_code=403, detail="Cloud выключен!")
+fastapi.exceptions.HTTPException: 403: Cloud выключен!
+
+

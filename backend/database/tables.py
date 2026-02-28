@@ -11,7 +11,30 @@ class Requests(Base):
 
 class Sending(Base):
     __tablename__ = 'sending'
-    telegram_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(Integer)
     file_path = Column(String)
-    time_send = Column(Integer)
+    time_send = Column(String)
+
+class Get_file(Base):
+    __tablename__ = 'get_file'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(Integer)
+    file_path = Column(String)
+    time_send = Column(String)
+    Sending = Column(String)
+
+class Swap_id_kd(Base):
+    __tablename__ = 'swap_id_kd'
+    telegram_id = Column(Integer, primary_key=True)
+    kd_time = Column(Integer)
+
+class TextMessage(Base):
+    __tablename__ = 'text_messages'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(Integer)
+    text = Column(String)
+    direction = Column(String)  # 'to_telegram' or 'to_site'
+    time_send = Column(String)
+    is_read = Column(Integer, default=0)
     

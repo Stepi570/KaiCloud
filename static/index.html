@@ -3,215 +3,528 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KaiCloud</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>KaiCloud - Вход</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-    font-family:'Inter',sans-serif;
-    background:#bfb6b6;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.wrapper{
-    min-height:100vh;
-    background:#2f2f33;
-    display:flex;
-    flex-direction:column;
+body {
+    background-color: #2f3136;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-header{
+/* ===== HEADER ===== */
+header {
+    background-color: #2b2d31;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #3c3f45;
     position: relative;
-    border-bottom:1px solid rgba(255,255,255,0.1);
-    padding:18px 40px;
-    display:flex;
-    justify-content:center; /* центрируем логотип */
-    align-items:center;
-    color:white;
 }
 
-.header-right{
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.instructions {
     position: absolute;
-    right: 40px; /* справа */
+    right: 20px;
+    color: #b5bac1;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
 }
 
-
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-size:22px;
-    font-weight:500;
+.instructions:hover {
+    background: #3c3f45;
 }
 
-.logo img{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    object-fit:cover;
+/* ===== MAIN ===== */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
-main{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:40px 20px;
-    color:white;
+/* ===== CONTENT PANEL ===== */
+.content-panel {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
-h1{
-    font-size:44px;
-    margin-bottom:20px;
+/* ===== WELCOME TEXT ===== */
+.welcome-text {
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-.subtitle{
-    max-width:700px;
-    font-size:18px;
-    line-height:1.6;
-    color:#cfcfcf;
-    margin-bottom:50px;
+.welcome-text h1 {
+    font-size: 44px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: white;
 }
 
-.card{
-    background:#e5e5e5;
-    width:420px;
-    max-width:95%;
-    border-radius:18px;
-    padding:35px 30px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+.welcome-text .subtitle {
+    max-width: 500px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #b5bac1;
 }
 
-.card h3{
-    color:#333;
-    margin-bottom:20px;
+/* ===== CARD ===== */
+.card {
+    background: #ffffff;
+    color: #2f3136;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    padding: 35px 30px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
 }
 
-.card input{
-    width:100%;
-    height:38px;
-    border-radius:8px;
-    border:none;
-    background:#cfcfcf;
-    margin-bottom:25px;
-    padding:0 12px;
-    font-size:14px;
-    outline:none;
+.card h3 {
+    color: #374151;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
 }
 
-.card button{
-    width:150px;
-    height:42px;
-    border-radius:20px;
-    border:none;
-    background:#8bbbd6;
-    color:#1d2b34;
-    font-size:15px;
-    cursor:pointer;
-    transition:0.2s;
+.card input {
+    width: 100%;
+    height: 48px;
+    border-radius: 30px;
+    border: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    margin-bottom: 25px;
+    padding: 0 20px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s;
 }
 
-.card button:hover{
-    background:#74a9c9;
+.card input:focus {
+    border-color: #4e9cff;
+    box-shadow: 0 0 0 3px rgba(78, 156, 255, 0.1);
+    background: white;
 }
 
-.card button:disabled{
-    background:#9daab3;
-    cursor:not-allowed;
+.card input::placeholder {
+    color: #9ca3af;
 }
 
-.status{
-    margin-top:18px;
-    font-size:14px;
-    min-height:18px;
-    color:#333;
+.card button {
+    width: 100%;
+    height: 48px;
+    border-radius: 40px;
+    border: none;
+    background: #4e9cff;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 16px rgba(78, 156, 255, 0.3);
 }
 
-.hint{
-    margin-top:25px;
-    font-size:14px;
-    color:#cfcfcf;
+.card button:hover {
+    background: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(78, 156, 255, 0.4);
 }
 
-@media (max-width:768px){
-    h1{font-size:32px;}
-    .subtitle{font-size:16px;}
-    header{padding:15px 20px;}
+.card button:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 12px rgba(78, 156, 255, 0.3);
 }
 
-@media (max-width:480px){
-    h1{font-size:26px;}
-    .subtitle{font-size:14px;}
-    .card{padding:25px 20px;}
+.card button:disabled {
+    background: #9ca3af;
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* ===== STATUS (только для ошибок) ===== */
+.status {
+    margin-top: 15px;
+    font-size: 14px;
+    min-height: 18px;
+    color: #e74c3c;
+    text-align: center;
+    padding: 8px 16px;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 30px;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+    display: none; /* Скрыт по умолчанию */
+}
+
+.status.show {
+    display: block; /* Показываем только когда есть ошибка */
+}
+
+/* ===== HINT ===== */
+.hint {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #b5bac1;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.hint strong {
+    color: #4e9cff;
+    font-weight: 600;
+    background: rgba(78, 156, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 30px;
+    display: inline-block;
+    margin: 4px 0;
+}
+
+/* ===== INSTRUCTIONS MODAL ===== */
+.instructions-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.instructions-content {
+    background-color: #2b2d31;
+    padding: 32px;
+    border-radius: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid #404249;
+}
+
+.close-instructions {
+    position: absolute;
+    right: 24px;
+    top: 20px;
+    font-size: 32px;
+    cursor: pointer;
+    color: #b5bac1;
+    transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-instructions:hover {
+    color: white;
+    background: #3c3f45;
+    transform: rotate(90deg);
+}
+
+.instructions-content h2 {
+    color: #fff;
+    margin-bottom: 24px;
+    font-size: 26px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.instructions-content p {
+    color: #b5bac1;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.instructions-content ol, 
+.instructions-content ul {
+    color: #b5bac1;
+    line-height: 1.6;
+    margin-left: 20px;
+    margin-bottom: 16px;
+}
+
+.instructions-content li {
+    margin-bottom: 8px;
+}
+
+.instructions-content .step {
+    background-color: #36393f;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #4e9cff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.instructions-content .step h3 {
+    color: #fff;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.instructions-content .important {
+    color: #ffcc00;
+    font-weight: 600;
+    margin-top: 12px;
+    display: block;
+    background: rgba(255, 204, 0, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border-left: 3px solid #ffcc00;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .content-panel {
+        gap: 20px;
+    }
+    
+    .welcome-text h1 {
+        font-size: 32px;
+    }
+    
+    .welcome-text .subtitle {
+        font-size: 16px;
+    }
+    
+    .card {
+        padding: 25px 20px;
+    }
+    
+    .title {
+        font-size: 20px;
+    }
+    
+    .instructions {
+        right: 10px;
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-text h1 {
+        font-size: 26px;
+    }
+    
+    .welcome-text .subtitle {
+        font-size: 14px;
+    }
+    
+    .card h3 {
+        font-size: 18px;
+    }
+    
+    .card input {
+        height: 44px;
+        font-size: 14px;
+    }
+    
+    .card button {
+        height: 44px;
+        font-size: 15px;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<div class="wrapper">
 <header>
-    <div class="logo">
-        <img src="/logo.jpg" alt="logo">
-        KaiCloud
+    <div class="header-content">
+        <img src="/logo.jpg" class="logo" alt="logo">
+        <div class="title">KaiCloud</div>
     </div>
-    <div class="header-right">Инструкция ▾</div>
+    <div class="instructions">Инструкция ▾</div>
 </header>
 
-
 <main>
+    <div class="content-panel">
+        <div class="welcome-text">
+            <h1>Загрузка файлов по ID</h1>
+            <div class="subtitle">
+                Отправка файлов из браузера в Telegram и наоборот имея только ID
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>Введите ваш ID</h3>
 
-<h1>Загрузка файлов по ID</h1>
+            <form id="startForm">
+                <input id="userId" type="text" placeholder="Например: 12345678" required>
+                <button id="startBtn" type="submit">Начать</button>
+            </form>
 
-<div class="subtitle">
-KaiCloud — ваш надёжный помощник для загрузки файлов по уникальному идентификатору из бота.<br>
-Введите ID и начните загрузку файлов прямо сейчас!
-</div>
-
-<div class="card">
-    <h3>Введите ваш id!</h3>
-
-    <form id="startForm">
-        <input id="userId" type="text" placeholder="Например: 12345678" required>
-        <button id="startBtn" type="submit">Начать</button>
-    </form>
-
-    <div class="status" id="status"></div>
-</div>
-
-<div class="hint">
-Получить id можно в @kit_raspisanie_bot<br>
-в разделе Cloud
-</div>
-
+            <!-- Статус только для ошибок, изначально скрыт -->
+            <div class="status" id="status"></div>
+            
+            <div class="hint">
+                Получить ID можно в <strong>@kit_raspisanie_bot</strong><br>в разделе Cloud
+            </div>
+        </div>
+    </div>
 </main>
+
+<!-- Instructions Modal -->
+<div id="instructionsModal" class="instructions-modal">
+    <div class="instructions-content">
+        <span class="close-instructions">&times;</span>
+        <h2>Инструкция по использованию KaiCloud</h2>
+
+        <div class="step">
+            <h3>1. Получение ID</h3>
+        
+            <ol>
+                <li>Откройте Telegram и найдите бота <strong>@kit_raspisanie_bot</strong></li>
+                <li>Нажмите кнопку <strong>Cloud</strong> в меню бота</li>
+                <li>Вы получите сообщение с вашим уникальным ID</li>
+                <li>Скопируйте этот ID</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>2. Аутентификация на сайте</h3>
+     
+            <ol>
+                <li>Введите скопированный ID в поле на этой странице</li>
+                <li>Нажмите кнопку <strong>Начать</strong></li>
+           
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>3. Загрузка файлов</h3>
+            
+            <ol>
+                <li><strong>Перетащить файлы</strong> в обозначенную область</li>
+                <li>Или нажать <strong>Выбрать из локальных</strong> для выбора файлов через диалог</li>
+                <li>Файлы будут автоматически отправлены в ваш Telegram-аккаунт</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>4. Важные моменты</h3>
+            <p><span class="important">⚠️ Обратите внимание:</span></p>
+            <ul>
+                <li>Ваш ID действует <strong>10 минут</strong> с момента получения</li>
+                <li>Если ID истек, вернитесь в Telegram и получите новый</li>
+                <li>Максимальный размер файла: <strong>20 MB</strong></li>
+                
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>5. Техническая поддержка</h3>
+            <p>Если у вас возникли проблемы:</p>
+            <ol>
+                <li>Напишите в Telegram-бот <strong>@kit_raspisanie_bot</strong></li>
+                <li>Выберите пункт <strong>Обратная связь</strong></li>
+                <li>Опишите вашу проблему</li>
+            </ol>
+          
+        </div>
+    </div>
 </div>
 
 <script>
 const API_URL = "/api/saitid";
+
+// Instructions modal functionality
+const instructionsBtn = document.querySelector('.instructions');
+const instructionsModal = document.getElementById('instructionsModal');
+const closeBtn = document.querySelector('.close-instructions');
+
+instructionsBtn.addEventListener('click', function() {
+    instructionsModal.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', function() {
+    instructionsModal.style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    if (event.target === instructionsModal) {
+        instructionsModal.style.display = 'none';
+    }
+});
 
 const form = document.getElementById("startForm");
 const input = document.getElementById("userId");
 const button = document.getElementById("startBtn");
 const statusBlock = document.getElementById("status");
 
+// Функция для показа ошибки
+function showError(message) {
+    statusBlock.textContent = message;
+    statusBlock.classList.add('show');
+}
+
+// Функция для скрытия ошибки
+function hideError() {
+    statusBlock.textContent = '';
+    statusBlock.classList.remove('show');
+}
+
 form.addEventListener("submit", async function(e){
     e.preventDefault();
+    
+    // Скрываем предыдущую ошибку
+    hideError();
 
     const id = input.value.trim();
 
     if(!id){
-        statusBlock.innerText = "Введите ID!";
+        showError("Введите ID!");
         return;
     }
 
     button.disabled = true;
-    statusBlock.innerText = "Добро пожаловать в KaiCloud!";
 
     try{
         const response = await fetch(API_URL,{
@@ -228,28 +541,31 @@ form.addEventListener("submit", async function(e){
         }catch{}
 
         if(response.ok){
-
-            // 🔥 РЕДИРЕКТ ЕСЛИ message === true
             if(data.message === true){
                 window.location.href = "/send/";
                 return;
             }
 
-            statusBlock.innerText = data.message || "Запрос обработан.";
+            // Если пришло какое-то другое сообщение об ошибке
+            if(data.message && data.message !== true) {
+                showError(data.message);
+            }
 
         }else{
-            statusBlock.innerText = data.error || "Неверный ID или ошибка сервера";
+            showError(data.error || "Неверный ID или ошибка сервера");
         }
 
     }catch(err){
-        statusBlock.innerText = "Не удалось подключиться к серверу";
+        showError("Не удалось подключиться к серверу");
         console.error(err);
     }
 
     button.disabled = false;
 });
+
+// Скрываем ошибку при начале ввода
+input.addEventListener('input', hideError);
 </script>
 
 </body>
 </html>
-

@@ -1,9 +1,16 @@
 import asyncio
 import logging
+from pathlib import Path
 import sys
+from database.requests import DBRequests
 import re
 import time
+import asyncio
+import aiofiles
+import aiofiles.os
+from pathlib import Path
 import os
+import aiofiles
 from docx import Document
 from datetime import datetime, timedelta, date
 from aiogram import Bot, Dispatcher, types, F, Router
@@ -186,6 +193,7 @@ class BroadcastState(StatesGroup):
     titul5=State()
     titul6=State()
     titul7=State()
+    text_to_site = State()  # Состояние для отправки текста на сайт
 
 
 
@@ -208,10 +216,78 @@ async def process_group(message: types.Message, state: FSMContext):
     await message.answer("Введи название дисциплины:")
     await state.set_state(BroadcastState.titul1)
 
+
+
+
+
+@dp.callback_query(F.data == "swap_id")
+async def check_subscription_callback(callback: types.CallbackQuery, state: FSMContext):
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [  # Первый ряд кнопок
+                InlineKeyboardButton(text="Выключить Cloud ❌", callback_data="cloud_off"),
+            ],
+            [  # Второй ряд кнопок
+                InlineKeyboardButton(text="Поменять ID 🔃", callback_data="swap_id")
+            ]])
+    if DBRequests().chek_swap_id_kd(callback.from_user.id):
+        await callback.message.edit_text("ID можно менять раз в час, попробуйте позже", reply_markup=keyboard)
+    else:
+        random_string_id = DBRequests().swap_person_id(callback.from_user.id)
+        await callback.message.edit_text(f"ID изменен на {random_string_id}", reply_markup=keyboard)
+
+
+@dp.callback_query(F.data == "cloud_off")
+async def check_subscription_callback(callback: types.CallbackQuery, state: FSMContext):
+
+    DBRequests().close_cloud(callback.from_user.id)
+    await callback.message.edit_text("Сессия Cloud закрыта ❌")
+
+
+@dp.callback_query(F.data == "send_text_to_site")
+async def send_text_to_site_callback(callback: types.CallbackQuery, state: FSMContext):
+    """Обработчик кнопки отправки текста на сайт"""
+    await callback.message.answer("Введите текст, который хотите отправить на сайт:\n\nДля отмены нажмите /отмена", reply_markup=otmena)
+    await state.set_state(BroadcastState.text_to_site)
+
+
+@dp.message(StateFilter(BroadcastState.text_to_site))
+async def process_text_to_site(message: types.Message, state: FSMContext):
+    """Обработчик текстовых сообщений для отправки на сайт"""
+    if not message.text:
+        await message.answer("Пожалуйста, отправьте текст!")
+        return
+    
+    # Проверяем, что Cloud включен
+    if not DBRequests().check_time_from_telegram_id(message.from_user.id):
+        await message.answer("Cloud выключен! Сначала включите Cloud.", reply_markup=main_keyboard)
+        await state.clear()
+        return
+    
+    # Сохраняем текст в базе данных
+    DBRequests().save_text_message(message.from_user.id, message.text, "to_site")
+    
+    await message.answer("Текст отправлен на сайт! ✅\n\nВы можете просмотреть его на kaicloud.ru", reply_markup=main_keyboard)
+    await state.clear()
+
+
+
+
 @dp.message(F.text == 'Cloud')
 async def process_group(message: types.Message, state: FSMContext):
     site_id_user = DBRequests().new_human(message.from_user.id)
-    await message.answer(f"Твйо Cloud ID: {site_id_user}\n\nВ течении следующих 10 минут ты можешь перекидывать файлы в Telegram через сайт kaicloud.ru, для этого нужен всего лишь ID")
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [  # Первый ряд кнопок
+                InlineKeyboardButton(text="Выключить Cloud ❌", callback_data="cloud_off"),
+            ],
+            [  # Второй ряд кнопок
+                InlineKeyboardButton(text="Поменять ID 🔃", callback_data="swap_id")
+            ],
+            [  # Третий ряд кнопок
+                InlineKeyboardButton(text="Отправить текст на сайт 📝", callback_data="send_text_to_site")
+            ]])
+    await message.answer(f"Cloud запущен!\nТвйо Cloud ID: {site_id_user}\n\nВ течении следующих 10 минут ты можешь перекидывать файлы в Telegram через сайт kaicloud.ru, для этого нужен всего лишь ID", reply_markup=keyboard)
 
 @dp.message(StateFilter(BroadcastState.titul1))
 async def process_group(message: types.Message, state: FSMContext):
@@ -1508,6 +1584,81 @@ async def process_group(message: types.Message, state: FSMContext):
     
     await admin_sms(user=message.from_user.username,idd=message.from_user.id)
     save(user=message.from_user.username,ID=message.from_user.id)
+
+
+async def async_remove_file(file_path):
+    path = Path(file_path)
+    try:
+        if await aiofiles.os.path.exists(path):
+            await aiofiles.os.remove(path)
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"❌ Ошибка при удалении {file_path}: {e}")
+        raise
+
+
+
+async def ensure_folder(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+
+@dp.message(
+    lambda message: message.document is not None 
+    or message.photo is not None 
+    or message.video is not None 
+    or message.audio is not None 
+    or message.voice is not None 
+    or message.sticker is not None 
+    or message.animation is not None 
+    or message.video_note is not None
+)
+async def handle_any_file(message: Message):
+    try:
+        if not DBRequests().check_time_from_telegram_id(message.from_user.id):
+            await message.answer("Не понимаю тебя, напиши /start\nЕсли хочешь отправиль файл активируй Cloud")
+            return
+        if DBRequests().check_sending_file(message.from_user.id):
+            await message.answer("Пока отправляется другой файл...")
+            return
+        if message.document:
+            file = message.document
+            file_name = file.file_name
+        elif message.photo:
+            file = message.photo[-1]
+            file_name = f"{file.file_id}.jpg"
+        elif message.video:
+            file = message.video
+            file_name = file.file_name or f"{file.file_id}.mp4"
+        elif message.audio:
+            file = message.audio
+            file_name = file.file_name or f"{file.file_id}.mp3"
+        elif message.voice:
+            file = message.voice
+            file_name = f"{file.file_id}.ogg"
+        elif message.sticker:
+            file = message.sticker
+            file_name = f"{file.file_id}.webp"
+        elif message.animation:
+            file = message.animation
+            file_name = file.file_name or f"{file.file_id}.mp4"
+        elif message.video_note:
+            file = message.video_note
+            file_name = f"{file.file_id}.mp4"
+        folder_path = f"get_files/{message.from_user.id}/{int(datetime.now().timestamp())}"
+        file_path = f"{folder_path}/{file_name}"
+        DBRequests().new_sending(message.from_user.id, file_path)
+        await ensure_folder(folder_path)    
+        await async_remove_file(file_path) 
+        await Bot.download(
+            file=file,
+            destination=file_path)
+        DBRequests().swap_sending(message.from_user.id, "sent")
+        await message.answer("Файл сохранен!\nПерейдите на kaicloud.ru и нажмите Скачать")
+    except Exception as e:
+        DBRequests().swap_sending(message.from_user.id, "error")
 
 @dp.message()
 async def process_group(message: types.Message):

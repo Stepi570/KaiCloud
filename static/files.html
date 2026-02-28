@@ -56,80 +56,520 @@ header {
     color: #b5bac1;
     cursor: pointer;
     font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.instructions:hover {
+    background: #3c3f45;
 }
 
 /* ===== MAIN ===== */
 main {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 20px;
 }
 
+/* ===== CLOUD PANEL ===== */
+.cloud-panel {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+/* ===== MODE SWITCHER ===== */
+.mode-switcher {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.switch-container {
+    background: #2b2d31;
+    padding: 4px;
+    border-radius: 999px;
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 48px;
+    border: 1px solid #404249;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.switch-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: 38px;
+    width: calc(33.33% - 4px);
+    background: #4e9cff;
+    border-radius: 999px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 8px rgba(78, 156, 255, 0.5);
+}
+
+.switch-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #969ba1;
+    user-select: none;
+    transition: color 0.2s;
+    line-height: 1;
+    padding: 0 5px;
+}
+
+.switch-btn.active {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== UPLOAD BOX ===== */
 .upload-box {
     background: #ffffff;
     color: #2f3136;
     width: 100%;
     max-width: 500px;
-    height: 260px;
-    border-radius: 12px;
+    height: 280px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
     text-align: center;
-    padding: 20px;
+    padding: 28px;
     position: relative;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    border: 2px solid transparent;
 }
 
 .upload-box.dragover {
-    background-color: #f0f3f8;
-    border: 2px dashed #4e9cff;
+    background-color: #f5f8ff;
+    border-color: #4e9cff;
+    transform: scale(1.01);
+    box-shadow: 0 20px 35px rgba(78, 156, 255, 0.2);
+}
+
+/* Отключаем dragover для режима получения */
+.upload-box.receive-mode {
+    border-color: #e0e0e0;
+}
+
+.upload-box.receive-mode.dragover {
+    background-color: #ffeeee;
+    border-color: #ff6b6b;
+}
+
+.upload-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .upload-icon {
-    font-size: 40px;
-    margin-bottom: 15px;
+    font-size: 56px;
+    margin-bottom: 16px;
+    opacity: 0.8;
 }
 
 .upload-text {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    font-weight: 500;
+    color: #374151;
 }
 
 .upload-link {
     color: #4e9cff;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 30px;
+    background: rgba(78, 156, 255, 0.08);
+    transition: all 0.2s;
+    border: 1px solid rgba(78, 156, 255, 0.2);
+}
+
+.upload-link:hover {
+    background: rgba(78, 156, 255, 0.15);
+    border-color: rgba(78, 156, 255, 0.4);
+    transform: translateY(-1px);
 }
 
 input[type="file"] {
     display: none;
 }
 
-/* ===== SUCCESS CHECK ===== */
+/* ===== DOWNLOAD MODE ===== */
+.download-text {
+    font-size: 16px;
+    margin-bottom: 24px;
+    color: #4b5563;
+    line-height: 1.6;
+    max-width: 320px;
+}
+
+.download-text b {
+    color: #4e9cff;
+    font-weight: 600;
+    background: rgba(78, 156, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 30px;
+    display: inline-block;
+    margin: 4px 0;
+}
+
+.download-btn {
+    background: #4e9cff;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 16px rgba(78, 156, 255, 0.3);
+}
+
+.download-btn:hover {
+    background: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(78, 156, 255, 0.4);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 12px rgba(78, 156, 255, 0.3);
+}
+
+/* ===== UPLOAD ERRORS ===== */
+.upload-error-details {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+    max-width: 90%;
+    word-break: break-word;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.upload-error-hint {
+    font-size: 13px;
+    color: #e74c3c;
+    margin-top: 4px;
+    opacity: 0.9;
+}
+
+/* ===== SUCCESS/ERROR STATES ===== */
 .checkmark {
-    font-size: 60px;
+    font-size: 70px;
     color: #28c76f;
     animation: pop 0.4s ease;
+    filter: drop-shadow(0 4px 8px rgba(40, 199, 111, 0.3));
+}
+
+.error-mark {
+    font-size: 70px;
+    color: #e74c3c;
+    animation: pop 0.4s ease;
+    filter: drop-shadow(0 4px 8px rgba(231, 76, 60, 0.3));
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 16px;
+    margin-top: 16px;
+    font-weight: 500;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 8px 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+    max-width: 90%;
+    word-break: break-word;
 }
 
 @keyframes pop {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* ===== INSTRUCTIONS MODAL ===== */
+.instructions-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.instructions-content {
+    background-color: #2b2d31;
+    padding: 32px;
+    border-radius: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid #404249;
+}
+
+.close-instructions {
+    position: absolute;
+    right: 24px;
+    top: 20px;
+    font-size: 32px;
+    cursor: pointer;
+    color: #b5bac1;
+    transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-instructions:hover {
+    color: white;
+    background: #3c3f45;
+    transform: rotate(90deg);
+}
+
+.instructions-content h2 {
+    color: #fff;
+    margin-bottom: 24px;
+    font-size: 26px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.instructions-content p {
+    color: #b5bac1;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.instructions-content ol, 
+.instructions-content ul {
+    color: #b5bac1;
+    line-height: 1.6;
+    margin-left: 20px;
+    margin-bottom: 16px;
+}
+
+.instructions-content li {
+    margin-bottom: 8px;
+}
+
+.instructions-content .step {
+    background-color: #36393f;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #4e9cff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.instructions-content .step h3 {
+    color: #fff;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.instructions-content .important {
+    color: #ffcc00;
+    font-weight: 600;
+    margin-top: 12px;
+    display: block;
+    background: rgba(255, 204, 0, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border-left: 3px solid #ffcc00;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
+    .cloud-panel {
+        gap: 20px;
+    }
+    
     .upload-box {
-        height: 220px;
+        height: 240px;
+        padding: 20px;
     }
 
     .title {
         font-size: 20px;
     }
+    
+    .instructions {
+        right: 10px;
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+    
+    .mode-switcher {
+        max-width: 340px;
+    }
+    
+    .switch-btn {
+        font-size: 14px;
+    }
+}
+
+/* ===== TEXT MESSAGING PANEL ===== */
+.text-panel {
+    display: none;
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    color: #2f3136;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.text-panel.active {
+    display: block;
+}
+
+.text-panel h3 {
+    color: #374151;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.text-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.text-message {
+    background: #e9ecef;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.text-message .time {
+    font-size: 11px;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+.text-message.sent {
+    background: #d4edda;
+    margin-left: 20%;
+}
+
+.text-message.received {
+    background: #d1ecf1;
+    margin-right: 20%;
+}
+
+.text-input-container {
+    display: flex;
+    gap: 8px;
+}
+
+.text-input {
+    flex: 1;
+    height: 44px;
+    border-radius: 22px;
+    border: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    padding: 0 16px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.text-input:focus {
+    border-color: #4e9cff;
+    box-shadow: 0 0 0 3px rgba(78, 156, 255, 0.1);
+    background: white;
+}
+
+.send-text-btn {
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 22px;
+    border: none;
+    background: #4e9cff;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.send-text-btn:hover {
+    background: #3b82f6;
+}
+
+.send-text-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.no-messages {
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+    padding: 20px;
+}
+
+.new-message-badge {
+    display: none;
+    background: #e74c3c;
+    color: white;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+}
+
+.new-message-badge.show {
+    display: inline-block;
 }
 </style>
 </head>
@@ -138,28 +578,109 @@ input[type="file"] {
 <header>
     <div class="header-content">
         <img src="/logo.jpg" class="logo" alt="logo">
-
-
         <div class="title">KaiCloud</div>
     </div>
-    <div class="instructions">Инструкция ▼</div>
+    <div class="instructions">Инструкция ▾</div>
 </header>
 
 <main>
-    <div class="upload-box" id="uploadBox">
-        <div class="upload-content" id="uploadContent">
-            <div class="upload-icon">📄</div>
-            <div class="upload-text">Перетащите сюда ваш файл</div>
-            <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+    <div class="cloud-panel">
+        <!-- Ползунок -->
+        <div class="mode-switcher">
+            <div class="switch-container">
+                <div class="switch-slider" id="switchSlider"></div>
+                <div class="switch-btn active" id="sendMode">Отправка</div>
+                <div class="switch-btn" id="receiveMode">Получение</div>
+                <div class="switch-btn" id="textMode">Сообщения <span class="new-message-badge" id="msgBadge">0</span></div>
+            </div>
         </div>
-        <input type="file" id="fileInput">
+        
+        <!-- Поле загрузки -->
+        <div class="upload-box" id="uploadBox">
+            <div class="upload-content" id="uploadContent">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Перетащите сюда ваш файл</div>
+                <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+            </div>
+            <input type="file" id="fileInput">
+        </div>
+
+        <!-- Панель текстовых сообщений -->
+        <div class="text-panel" id="textPanel">
+            <h3>Сообщения из Telegram</h3>
+            <div class="text-messages" id="textMessages">
+                <div class="no-messages">Нет сообщений</div>
+            </div>
+            <div class="text-input-container">
+                <input type="text" class="text-input" id="textInput" placeholder="Введите текст для Telegram...">
+                <button class="send-text-btn" id="sendTextBtn">Отправить</button>
+            </div>
+        </div>
     </div>
 </main>
 
+<!-- Instructions Modal -->
+<div id="instructionsModal" class="instructions-modal">
+    <div class="instructions-content">
+        <span class="close-instructions">&times;</span>
+        <h2>Инструкция по использованию KaiCloud</h2>
+
+        <div class="step">
+            <h3>1. Получение ID</h3>
+        
+            <ol>
+                <li>Откройте Telegram и найдите бота <strong>@kit_raspisanie_bot</strong></li>
+                <li>Нажмите кнопку <strong>Cloud</strong> в меню бота</li>
+                <li>Вы получите сообщение с вашим уникальным ID</li>
+                <li>Скопируйте этот ID</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>2. Аутентификация на сайте</h3>
+     
+            <ol>
+                <li>Введите скопированный ID в поле на этой странице</li>
+                <li>Нажмите кнопку <strong>Начать</strong></li>
+           
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>3. Загрузка файлов</h3>
+            
+            <ol>
+                <li><strong>Перетащить файлы</strong> в обозначенную область</li>
+                <li>Или нажать <strong>Выбрать из локальных</strong> для выбора файлов через диалог</li>
+                <li>Файлы будут автоматически отправлены в ваш Telegram-аккаунт</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>4. Важные моменты</h3>
+            <p><span class="important">⚠️ Обратите внимание:</span></p>
+            <ul>
+                <li>Ваш ID действует <strong>10 минут</strong> с момента получения</li>
+                <li>Если ID истек, вернитесь в Telegram и получите новый</li>
+                <li>Максимальный размер файла: <strong>20 MB</strong></li>
+                
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>5. Техническая поддержка</h3>
+            <p>Если у вас возникли проблемы:</p>
+            <ol>
+                <li>Напишите в Telegram-бот <strong>@kit_raspisanie_bot</strong></li>
+                <li>Выберите пункт <strong>Обратная связь</strong></li>
+                <li>Опишите вашу проблему</li>
+            </ol>
+          
+        </div>
+    </div>
+</div>
+
 <script>
-/* =======================
-   Проверка при открытии
-======================= */
 /* =======================
    Проверка при открытии
 ======================= */
@@ -176,78 +697,570 @@ async function checkAccess() {
     }
 }
 
-// При первой загрузке
 window.addEventListener("load", checkAccess);
-
-// При возврате назад из кэша
 window.addEventListener("pageshow", (event) => {
-    if (event.persisted) { // страница загружена из bfcache
+    if (event.persisted) {
         checkAccess();
     }
 });
 
+/* =======================
+   Instructions Modal
+======================= */
+const instructionsBtn = document.querySelector('.instructions');
+const instructionsModal = document.getElementById('instructionsModal');
+const closeBtn = document.querySelector('.close-instructions');
+
+instructionsBtn.addEventListener('click', function() {
+    instructionsModal.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', function() {
+    instructionsModal.style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    if (event.target === instructionsModal) {
+        instructionsModal.style.display = 'none';
+    }
+});
 
 /* =======================
-   Загрузка файла
+   Upload Logic
 ======================= */
 const uploadBox = document.getElementById("uploadBox");
 const fileInput = document.getElementById("fileInput");
 const fileSelect = document.getElementById("fileSelect");
 const uploadContent = document.getElementById("uploadContent");
 
-fileSelect.addEventListener("click", () => fileInput.click());
+// Флаг для отслеживания режима
+let currentMode = "send";
+
+// Таймер для проверки новых сообщений
+let messageCheckInterval = null;
+
+// Таймер для автоматического сброса ошибок
+let errorTimeout = null;
+
+// Начальная настройка
+fileSelect.addEventListener("click", () => {
+    if (currentMode === "send") {
+        fileInput.click();
+    }
+});
 
 uploadBox.addEventListener("dragover", e => {
     e.preventDefault();
-    uploadBox.classList.add("dragover");
+    // Добавляем класс dragover только в режиме отправки
+    if (currentMode === "send") {
+        uploadBox.classList.add("dragover");
+    } else {
+        // В режиме получения показываем другой стиль
+        uploadBox.classList.add("receive-mode", "dragover");
+    }
 });
 
 uploadBox.addEventListener("dragleave", () => {
-    uploadBox.classList.remove("dragover");
+    uploadBox.classList.remove("dragover", "receive-mode");
 });
 
 uploadBox.addEventListener("drop", e => {
     e.preventDefault();
-    uploadBox.classList.remove("dragover");
-    handleFile(e.dataTransfer.files[0]);
+    uploadBox.classList.remove("dragover", "receive-mode");
+    
+    // Обрабатываем файл только в режиме отправки
+    if (currentMode === "send") {
+        handleFile(e.dataTransfer.files[0]);
+    }
 });
 
 fileInput.addEventListener("change", e => {
-    handleFile(e.target.files[0]);
+    if (currentMode === "send") {
+        handleFile(e.target.files[0]);
+    }
 });
+
+/* =======================
+   Обработка ошибок от бэкенда
+======================= */
+async function handleApiError(response) {
+    let errorMessage = "Ошибка загрузки";
+    let errorDetails = "";
+    
+    try {
+        // Пытаемся получить детали ошибки из JSON
+        const errorData = await response.json();
+        if (errorData.detail) {
+            errorMessage = errorData.detail;
+            
+            // Если detail это объект с дополнительной информацией
+            if (typeof errorData.detail === 'object') {
+                errorDetails = JSON.stringify(errorData.detail);
+            }
+        } else if (errorData.message) {
+            errorMessage = errorData.message;
+        }
+        
+        // Добавляем дополнительную информацию если есть
+        if (errorData.error) {
+            errorDetails = errorData.error;
+        }
+    } catch (e) {
+        // Если не удалось распарсить JSON, используем статус
+        switch (response.status) {
+            case 403:
+                errorMessage = "Доступ запрещен. Проверьте авторизацию.";
+                break;
+            case 413:
+                errorMessage = "Файл слишком большой (максимум 20MB)";
+                break;
+            case 400:
+                errorMessage = "Некорректный запрос";
+                break;
+            case 500:
+                errorMessage = "Внутренняя ошибка сервера";
+                break;
+            default:
+                errorMessage = `Ошибка ${response.status}: ${response.statusText}`;
+        }
+    }
+    
+    // Специальная обработка для ошибки "Cloud выключен"
+    if (errorMessage.includes("Cloud выключен") || errorMessage.includes("выключен")) {
+        errorMessage = "☁️ Сессия Cloud закрыта, зайдите в @kit_raspisanie_bot и обновите сессию";
+ 
+    }
+    
+    // Обработка ошибок Telegram
+    if (errorMessage.includes("Telegram") || errorMessage.includes("telegram")) {
+        errorDetails = "Проблема с отправкой в Telegram. Попробуйте позже.";
+    }
+    
+    return { message: errorMessage, details: errorDetails };
+}
+
+function showError(errorMessage, errorDetails = "", duration = 3000) {
+    // Очищаем предыдущий таймер если был
+    if (errorTimeout) {
+        clearTimeout(errorTimeout);
+    }
+    
+    let html = `
+        <div class="error-mark">❌</div>
+        <div class="error-message">${errorMessage}</div>
+    `;
+    
+    if (errorDetails) {
+        html += `<div class="upload-error-details">${errorDetails}</div>`;
+    }
+    
+    // Добавляем подсказку для некоторых ошибок
+    if (errorMessage.includes("Cloud выключен")) {
+        html += `<div class="upload-error-hint">⏳ Ожидайте возобновления работы</div>`;
+    } else if (errorMessage.includes("авторизац")) {
+        html += `<div class="upload-error-hint">🔄 Обновите страницу и войдите заново</div>`;
+    } else if (errorMessage.includes("большой")) {
+        html += `<div class="upload-error-hint">📦 Максимальный размер: 20MB</div>`;
+    }
+    
+    uploadContent.innerHTML = html;
+    
+    errorTimeout = setTimeout(() => {
+        resetUploadBox();
+        errorTimeout = null;
+    }, duration);
+}
 
 function handleFile(file) {
     if (!file) return;
 
-    // Отправка файла
+    // Очищаем предыдущий таймер
+    if (errorTimeout) {
+        clearTimeout(errorTimeout);
+        errorTimeout = null;
+    }
+
+    const maxSize = 20 * 1024 * 1024; // 20MB в байтах
+    if (file.size > maxSize) {
+        showError(
+            "Файл слишком большой!", 
+            `Размер: ${(file.size / (1024 * 1024)).toFixed(2)}MB, максимум: 20MB`,
+            3000
+        );
+        return;
+    }
+
+    // Проверка на пустой файл
+    if (file.size === 0) {
+        showError("Файл пустой", "Невозможно загрузить пустой файл", 2500);
+        return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 
+    // Показываем индикатор загрузки с информацией о файле
+    uploadContent.innerHTML = `
+        <div class="upload-icon">🕐</div>
+        <div class="upload-text">Загрузка...</div>
+        <div class="upload-error-details">${file.name} (${(file.size / 1024).toFixed(1)}KB)</div>
+    `;
+
+    // Добавляем таймаут для fetch
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд таймаут
+
     fetch("/api/upload", {
         method: "POST",
-        body: formData
+        body: formData,
+        signal: controller.signal
+    })
+    .then(async response => {
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+            // Успешная загрузка
+            uploadContent.innerHTML = `
+                <div class="checkmark">✔</div>
+                <div class="upload-text">Файл отправлен!</div>
+                <div class="upload-error-details">${file.name}</div>
+            `;
+            setTimeout(() => {
+                resetUploadBox();
+            }, 2000);
+        } else {
+            // Обработка ошибки от сервера
+            const { message, details } = await handleApiError(response);
+            showError(message, details, 4000);
+        }
+    })
+    .catch((error) => {
+        clearTimeout(timeoutId);
+        console.error("Upload error:", error);
+        
+        let errorMessage = "Ошибка соединения с сервером";
+        let errorDetails = "";
+        
+        if (error.name === 'AbortError') {
+            errorMessage = "Превышено время ожидания";
+            errorDetails = "Сервер не отвечает более 30 секунд";
+        } else if (error.message) {
+            errorDetails = error.message;
+        }
+        
+        showError(errorMessage, errorDetails, 3000);
     });
-
-    // Показать галочку
-    uploadContent.innerHTML = `<div class="checkmark">✔</div>`;
-
-    setTimeout(() => {
-        resetUploadBox();
-    }, 1500);
 }
 
 function resetUploadBox() {
+    if (errorTimeout) {
+        clearTimeout(errorTimeout);
+        errorTimeout = null;
+    }
+    
+    if (currentMode === "send") {
+        uploadContent.innerHTML = `
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Перетащите сюда ваш файл</div>
+            <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+        `;
+        document.getElementById("fileSelect")
+            .addEventListener("click", () => fileInput.click());
+    } else {
+        switchMode("receive");
+    }
+}
+
+/* =======================
+   MODE SWITCHER
+======================= */
+const sendModeBtn = document.getElementById("sendMode");
+const receiveModeBtn = document.getElementById("receiveMode");
+const textModeBtn = document.getElementById("textMode");
+const slider = document.getElementById("switchSlider");
+const textPanel = document.getElementById("textPanel");
+
+sendModeBtn.onclick = () => switchMode("send");
+receiveModeBtn.onclick = () => switchMode("receive");
+textModeBtn.onclick = () => switchMode("text");
+
+function switchMode(mode) {
+    currentMode = mode;
+
+    // Очищаем таймер при смене режима
+    if (errorTimeout) {
+        clearTimeout(errorTimeout);
+        errorTimeout = null;
+    }
+
+    // Убираем все классы режимов
+    uploadBox.classList.remove("receive-mode");
+    textPanel.classList.remove("active");
+    uploadBox.style.display = "block";
+
+    if (mode === "send") {
+        slider.style.transform = "translateX(0)";
+        sendModeBtn.classList.add("active");
+        receiveModeBtn.classList.remove("active");
+        textModeBtn.classList.remove("active");
+
+        uploadContent.innerHTML = `
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Перетащите сюда ваш файл</div>
+            <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+        `;
+        document.getElementById("fileSelect")
+            .addEventListener("click", () => fileInput.click());
+    }
+
+    if (mode === "receive") {
+        slider.style.transform = "translateX(100%)";
+        receiveModeBtn.classList.add("active");
+        sendModeBtn.classList.remove("active");
+        textModeBtn.classList.remove("active");
+        
+        // Добавляем класс для режима получения
+        uploadBox.classList.add("receive-mode");
+
+        uploadContent.innerHTML = `
+            <div class="download-text">
+                Пришлите в бота <b>@kit_raspisanie_bot</b><br>
+                файл до 20мб и нажмите скачать
+            </div>
+            <button class="download-btn" id="downloadBtn">
+                Скачать
+            </button>
+        `;
+        document.getElementById("downloadBtn")
+            .addEventListener("click", downloadLastFile);
+    }
+
+    if (mode === "text") {
+        slider.style.transform = "translateX(200%)";
+        textModeBtn.classList.add("active");
+        sendModeBtn.classList.remove("active");
+        receiveModeBtn.classList.remove("active");
+        
+        // Скрываем upload box и показываем текстовую панель
+        uploadBox.style.display = "none";
+        textPanel.classList.add("active");
+        
+        // Загружаем сообщения
+        loadTextMessages();
+        
+        // Запускаем проверку новых сообщений
+        startMessageChecking();
+    }
+}
+
+/* =======================
+   DOWNLOAD LAST FILE
+======================= */
+function downloadLastFile() {
     uploadContent.innerHTML = `
-        <div class="upload-icon">📄</div>
-        <div class="upload-text">Перетащите сюда ваш файл</div>
-        <div class="upload-link" id="fileSelect">Выбрать из локальных</div>
+        <div class="upload-icon">🕐</div>
+        <div class="upload-text">Получаем файл...</div>
     `;
-    document.getElementById("fileSelect")
-        .addEventListener("click", () => fileInput.click());
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    // Добавляем уникальный параметр timestamp для обхода кэша
+    const timestamp = new Date().getTime();
+    fetch(`/api/download?t=${timestamp}`, {
+        signal: controller.signal
+    })
+        .then(async response => {
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                const { message, details } = await handleApiError(response);
+                throw new Error(details ? `${message}: ${details}` : message);
+            }
+            
+            const disposition = response.headers.get('Content-Disposition');
+            let filename = 'download';
+            
+            if (disposition && disposition.includes('attachment')) {
+                const filenameMatch = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                if (filenameMatch && filenameMatch[1]) {
+                    filename = filenameMatch[1].replace(/['"]/g, '');
+                }
+                
+                const utf8Match = disposition.match(/filename\*=UTF-8''([^;\n]*)/);
+                if (utf8Match) {
+                    filename = decodeURIComponent(utf8Match[1]);
+                }
+            }
+            
+            return response.blob().then(blob => ({ blob, filename }));
+        })
+        .then(({ blob, filename }) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            switchMode("receive");
+        })
+        .catch((error) => {
+            clearTimeout(timeoutId);
+            console.error("Download error:", error);
+            
+            let errorMessage = "Ошибка скачивания";
+            let errorDetails = error.message || "Файл не найден";
+            
+            if (error.name === 'AbortError') {
+                errorMessage = "Превышено время ожидания";
+                errorDetails = "Сервер не отвечает более 30 секунд";
+            }
+            
+            showError(errorMessage, errorDetails, 3000);
+        });
+}
+
+/* =======================
+   TEXT MESSAGING FUNCTIONS
+======================= */
+const textInput = document.getElementById("textInput");
+const sendTextBtn = document.getElementById("sendTextBtn");
+const textMessages = document.getElementById("textMessages");
+const msgBadge = document.getElementById("msgBadge");
+
+// Отправка текста в Telegram
+sendTextBtn.onclick = async () => {
+    const text = textInput.value.trim();
+    if (!text) return;
+    
+    sendTextBtn.disabled = true;
+    sendTextBtn.textContent = "Отправка...";
+    
+    try {
+        const response = await fetch("/api/send_text", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text: text })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            textInput.value = "";
+            // Добавляем отправленное сообщение в чат
+            addMessageToChat(text, new Date().toLocaleTimeString("ru-RU", {hour: '2-digit', minute:'2-digit'}), "sent");
+        } else {
+            alert("Ошибка: " + (data.message || "Не удалось отправить"));
+        }
+    } catch (error) {
+        console.error("Error sending text:", error);
+        alert("Ошибка при отправке");
+    } finally {
+        sendTextBtn.disabled = false;
+        sendTextBtn.textContent = "Отправить";
+    }
+};
+
+// Отправка по Enter
+textInput.onkeypress = (e) => {
+    if (e.key === "Enter") {
+        sendTextBtn.click();
+    }
+};
+
+// Загрузка сообщений с сервера
+async function loadTextMessages() {
+    try {
+        const response = await fetch("/api/get_text_messages");
+        const data = await response.json();
+        
+        if (data.messages && data.messages.length > 0) {
+            textMessages.innerHTML = "";
+            // Показываем сообщения в обратном порядке (новые внизу)
+            data.messages.reverse().forEach(msg => {
+                addMessageToChat(msg.text, msg.time, "received");
+            });
+        } else {
+            textMessages.innerHTML = '<div class="no-messages">Нет сообщений</div>';
+        }
+        
+        // Сбрасываемbadge
+        msgBadge.classList.remove("show");
+        msgBadge.textContent = "0";
+    } catch (error) {
+        console.error("Error loading messages:", error);
+    }
+}
+
+// Добавление сообщения в чат
+function addMessageToChat(text, time, type) {
+    // Убираем "нет сообщений" если есть
+    const noMsg = textMessages.querySelector(".no-messages");
+    if (noMsg) {
+        noMsg.remove();
+    }
+    
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `text-message ${type}`;
+    msgDiv.innerHTML = `
+        ${escapeHtml(text)}
+        <div class="time">${time}</div>
+    `;
+    textMessages.appendChild(msgDiv);
+    
+    // Прокрутка вниз
+    textMessages.scrollTop = textMessages.scrollHeight;
+}
+
+// Экранирование HTML
+function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Проверка новых сообщений
+async function checkNewMessages() {
+    try {
+        const response = await fetch("/api/check_new_text");
+        const data = await response.json();
+        
+        if (data.has_new && data.count > 0) {
+            // Обновляем badge
+            msgBadge.textContent = data.count;
+            msgBadge.classList.add("show");
+            
+            // Если мы в режиме текста - загружаем сообщения
+            if (currentMode === "text") {
+                loadTextMessages();
+            }
+        }
+    } catch (error) {
+        console.error("Error checking new messages:", error);
+    }
+}
+
+// Запуск периодической проверки сообщений
+function startMessageChecking() {
+    if (messageCheckInterval) {
+        clearInterval(messageCheckInterval);
+    }
+    // Проверяем каждые 5 секунд
+    messageCheckInterval = setInterval(checkNewMessages, 5000);
+}
+
+// Остановка проверки сообщений
+function stopMessageChecking() {
+    if (messageCheckInterval) {
+        clearInterval(messageCheckInterval);
+        messageCheckInterval = null;
+    }
 }
 </script>
 
 </body>
 </html>
-
-
