@@ -25,6 +25,7 @@ import pytz
 from database.requests import DBRequests
 import pandas as pd 
 from collections import defaultdict
+import aiohttp
 
 file_path = 'file.xlsx'
 df = pd.read_excel('file.xlsx')
@@ -1670,7 +1671,41 @@ async def process_group(message: types.Message):
     save(user=message.from_user.username,ID=message.from_user.id)
    
 async def main():
+    # Запускаем фоновую задачу для проверки сообщений
+    asyncio.create_task(check_and_send_text_messages())
     await dp.start_polling(Bot)
+
+
+async def check_and_send_text_messages():
+    """Фоновая задача: проверяет новые сообщения для отправки в Telegram"""
+    await asyncio.sleep(5)  # Даём боту время запуститься
+    
+    while True:
+        try:
+            db = DBRequests()
+            # Получаем все неотправленные сообщения для Telegram
+            messages = db.get_unsent_telegram_messages()
+            
+            for msg in messages:
+                try:
+                    # Проверяем, что Cloud пользователя всё ещё активен
+                    if db.check_time_from_telegram_id(msg.telegram_id):
+                        await Bot.send_message(chat_id=msg.telegram_id, text=msg.text)
+                        db.mark_message_sent(msg.id)
+                        print(f"Отправлено сообщение {msg.id} пользователю {msg.telegram_id}")
+                    else:
+                        # Если Cloud не активен, всё равно помечаем как отправленное
+                        # чтобы не пытаться отправить снова
+                        db.mark_message_sent(msg.id)
+                except Exception as e:
+                    print(f"Ошибка отправки сообщения {msg.id}: {e}")
+                    # Пробуем следующее сообщение
+                    continue
+            
+            await asyncio.sleep(3)
+        except Exception as e:
+            print(f"Error in background task: {e}")
+            await asyncio.sleep(10)
 
 if __name__ == "__main__":
     try:

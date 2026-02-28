@@ -109,7 +109,8 @@ class DBRequests():
                 text=text,
                 direction=direction,
                 time_send=(datetime.now() + timedelta(hours=3)).strftime("%H:%M %d.%m.%Y"),
-                is_read=0
+                is_read=0,
+                is_sent=0
             )
             session.add(message)
             session.commit()
@@ -155,3 +156,22 @@ class DBRequests():
                 TextMessage.direction == direction
             ).order_by(TextMessage.id.desc()).first()
             return message
+    
+    def get_unsent_telegram_messages(self):
+        """Получить все неотправленные сообщения для Telegram"""
+        with self.session() as session:
+            messages = session.query(TextMessage).filter(
+                TextMessage.direction == "to_telegram",
+                TextMessage.is_sent == 0
+            ).order_by(TextMessage.id.asc()).all()
+            return messages
+    
+    def mark_message_sent(self, message_id):
+        """Отметить сообщение как отправленное"""
+        with self.session() as session:
+            message = session.query(TextMessage).filter(
+                TextMessage.id == message_id
+            ).first()
+            if message:
+                message.is_sent = 1
+                session.commit()

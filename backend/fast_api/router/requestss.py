@@ -117,15 +117,11 @@ async def send_text_to_telegram(data: TextMessageModel, telegram_id: Annotated[s
         if not DBRequests().check_time_from_telegram_id(telegram_id):
             raise HTTPException(status_code=403, detail="Cloud выключен!")
         
-        # Сохраняем сообщение в базе
+        # Сохраняем сообщение в базе - бот сам отправит его в фоне
         db_requests = DBRequests()
         db_requests.save_text_message(telegram_id, data.text, "to_telegram")
         
-        # Отправляем сообщение в Telegram
-        from telegram.main import send_text_message
-        asyncio.create_task(send_text_message(telegram_id, data.text))
-        
-        return {"message": "Текст отправлен в Telegram", "success": True}
+        return {"message": "Текст сохранен и будет отправлен", "success": True}
     except HTTPException:
         raise
     except Exception as e:

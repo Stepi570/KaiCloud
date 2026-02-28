@@ -37,4 +37,5 @@ class TextMessage(Base):
     direction = Column(String)  # 'to_telegram' or 'to_site'
     time_send = Column(String)
     is_read = Column(Integer, default=0)
+    is_sent = Column(Integer, default=0)  # 0 = не отправлено, 1 = отправлено
     
